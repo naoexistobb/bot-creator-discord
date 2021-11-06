@@ -100,12 +100,8 @@ mais pra frente eu adiciono mais comandos
 
 https://discord.gg/QNtwYrzrVB
 
-### GitHUB
-
-https://github.com/naoexistobb/bot-creator-discord
-
 
 ## Notas:
 
 Em breve vou adicionar mais funções, fiquem ligados!
-# um pequeno passo para o homen, um grande passo para o programador!
+## um pequeno passo para o homen, um grande passo para o programador!
