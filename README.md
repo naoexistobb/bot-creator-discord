@@ -100,6 +100,9 @@ mais pra frente eu adiciono mais comandos
 
 https://discord.gg/QNtwYrzrVB
 
+### GitHUB
+
+https://github.com/naoexistobb/bot-creator-discord
 
 
 ## Notas:
