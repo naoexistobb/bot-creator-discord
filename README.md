@@ -96,11 +96,7 @@ help - veja os comandos
 ```
 mais pra frente eu adiciono mais comandos
 
-### Servidor de suporte
-
-https://discord.gg/Dxxm6xmXeT
-
 ## Notas:
 
 Em breve vou adicionar mais funções, fiquem ligados!
-# um pequeno passo para o homen, um grande passo para o programador!
+## um pequeno passo para o homen, um grande passo para o programador!
