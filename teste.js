@@ -1,4 +1,4 @@
-const bot = require('discord-bot-creation')
+const bot = require('./index')
 const token = 'SEU_TOKEN_AQUI'
 
 let desc = `**Titulo:**\nDescrição`

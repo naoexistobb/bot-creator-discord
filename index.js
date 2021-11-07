@@ -5,10 +5,10 @@ const Commands = require('./models/Commands.js')
 const Discord = require('discord.js');
 const Starter = new Discord.Client({ intents: 32767 })
 const db = require('quick.db')
-var mongoDB;
-var Client;
-var Prefix;
-var Canal;
+let mongoDB;
+let Client;
+let Prefix;
+let Canal;
 
 class BotConstructor {
 
@@ -22,8 +22,8 @@ class BotConstructor {
         if(!client) return console.log('Você não definiu o client ao fazer login!')
 
         Client = client;
-    
-        return client.login(token).then(() => { console.log(c.white(`Bot logado como ${client.user.tag} ✅`))})
+        
+        return client.login(token).then(() => { console.log(c.green(`Bot logado como `) + c.white(`${client.user.tag} ✅`)) })
     }
 
     static async login(token) {
@@ -32,35 +32,31 @@ class BotConstructor {
         if(!Client) {
             Starter.login(token).then(() => { console.log(c.green(`Bot logado como `) + c.white(`${Starter.user.tag} ✅`)) })
         } else {
-            console.log(c.red('Você já está logado no seu bot!'))
+            console.error(c.red('Você já está logado no seu bot!'))
         }
 
     }
 
     static async setOwner(owner) {
-        if(!owner) return console.log(c.red('Você esqueceu de setar o dono do seu bot!'))
+        if(!owner) return console.error(c.red('Você esqueceu de setar o dono do seu bot!'))
 
-        return console.log('Ainda não está pronto')
-    }
-
-    static async Slaoq(msg, nome) {
-
+        return console.error('Ainda não está pronto')
     }
 
     static async setWelcome(guildID, channel, type, response) {
         if(Client) {
             if(!guildID) {
                 Client.destroy()
-                return console.log(c.red('Você esqueceu de colocar o ID do servidor. ') + c.white('[ setWelcome ]'))
+                return console.error(c.red('Você esqueceu de colocar o ID do servidor. ') + c.white('[ setWelcome ]'))
             } else if(!channel) {
                 Client.destroy()
-                return console.log(c.red('Você não definiu o canal. ') + c.white('[ setWelcome ]'))
+                return console.error(c.red('Você não definiu o canal. ') + c.white('[ setWelcome ]'))
             } else if(!type) {
                 Client.destroy()
-                return console.log(c.red('Você precisa definir um tipo de mensagem!') + c.white('[ setWelcome ] | [ message ou embed]'))
+                return console.error(c.red('Você precisa definir um tipo de mensagem!') + c.white('[ setWelcome ] | [ message ou embed]'))
             } else if(!response) {
                 Client.destroy()
-                return console.log(c.red('Você não definiu a mensagem. ') + c.white('[ setWelcome ]'))
+                return console.error(c.red('Você não definiu a mensagem. ') + c.white('[ setWelcome ]'))
             }
 
             Canal = channel
@@ -96,10 +92,10 @@ class BotConstructor {
     }
 
     static async createCommand(name, description, mode, response) {
-        if(!name) return console.log('Você não para um nome para seu comando!')
-        if(!description) return console.log('Você não definiu a descrição do comando!')
-        if(!mode) return console.log('Você não definiu o tipo de comando, tipos: [ embed, message ]')
-        if(!mode === 'embed' || !mode === 'message') return console.log(c.red("Você precisa definir um tipo válido! , [ embed, message ]"))
+        if(!name) return console.error('Você não para um nome para seu comando!')
+        if(!description) return console.error('Você não definiu a descrição do comando!')
+        if(!mode) return console.error('Você não definiu o tipo de comando, tipos: [ embed, message ]')
+        if(!mode === 'embed' || !mode === 'message') return console.error(c.red("Você precisa definir um tipo válido! , [ embed, message ]"))
 
         if(!mongoDB == undefined) {
         const verificar = await Commands.findOne({ name: name })
@@ -131,7 +127,7 @@ class BotConstructor {
         /*const load = require('./handlers/loadCommands.js')
         load.start()*/
 
-        if(!prefix) return console.log(c.red('Você precisa definir um prefixo ao carregar os comandos!'))
+        if(!prefix) return console.error(c.red('Você precisa definir um prefixo ao carregar os comandos!'))
 
         Prefix = prefix;
 
@@ -305,7 +301,7 @@ class BotConstructor {
     }
 
     static async setStatus(status) {
-        if(!status) return console.log(c.red("Defina o status! [ setStatus ]"))
+        if(!status) return console.error(c.red("Defina o status! [ setStatus ]"))
 
         
         if(Client) {
@@ -320,7 +316,7 @@ class BotConstructor {
     }
 
     static async setURL(url) {
-        if(!url) return console.log(c.red('Defina uma URL mongo!'))
+        if(!url) return console.error(c.red('Defina uma URL mongo!'))
         mongoDB = url;
         return mongoose.connect(url).then(function() {console.log(c.green(`[ MONGODB ] - CONECTADO A DATABASE.`))})
     }
