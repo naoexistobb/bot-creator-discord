@@ -4,6 +4,7 @@ const User = require('./models/User.js')
 const Commands = require('./models/Commands.js')
 const Discord = require('discord.js');
 const Starter = new Discord.Client({ intents: 32767 })
+const version = require('./package.json')
 const db = require('quick.db')
 let mongoDB;
 let Client;
@@ -298,6 +299,12 @@ class BotConstructor {
             }
 
         console.log(c.green(`Comandos `) + c.green('carregados ✅'))
+    }
+
+    static async version() {
+        if(!version == '0.1.1') return console.log(c.white(`Você está usando uma versão desatualizada! `) + c.red(`para atualizar use: npm install discord-bot-creation@${version}`))
+
+        return console.log(c.white(`Versão do package: `) + c.green(`${version}`))
     }
 
     static async setStatus(status) {

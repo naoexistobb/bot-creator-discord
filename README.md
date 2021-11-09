@@ -88,6 +88,12 @@ let type = 'embed' // o type pode ser embed ou message
 bot.setWelcome('SERVIDOR_ID', 'CANAL_ID', type, response)```
 ```
 
+###  Ver versão atual
+
+```js
+bot.version()
+```
+
 ### Comandos já incluídos
 
 ```js
