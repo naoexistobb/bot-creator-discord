@@ -6,6 +6,7 @@ const Discord = require('discord.js');
 const Starter = new Discord.Client({ intents: 32767 })
 const version = require('./package.json')
 const db = require('quick.db')
+const fs = require("fs");
 let mongoDB;
 let Client;
 let Prefix;
@@ -125,180 +126,21 @@ class BotConstructor {
     //console.log(c.yellow(`[ ${name} ] - COMANDO CARREGADO`))
 
     static async loadCommands(prefix) {
-        /*const load = require('./handlers/loadCommands.js')
-        load.start()*/
+        if(Client) {
+            Client.categories = fs.readdirSync("./src/commands/");
+            ["Client"].forEach(handler => {
+  require(`./handlers/${handler}`)(Client);
+});
 
-        if(!prefix) return console.error(c.red('Você precisa definir um prefixo ao carregar os comandos!'))
+        } else if(Starter) {
+            Starter.categories = fs.readdirSync("./src/commands/");
+["Client"].forEach(handler => {
+  require(`./handlers/${handler}`)(Starter);
+});
 
-        Prefix = prefix;
-
-            if(Client) {
-                Client.on("messageCreate", async (message) => {
-                    if(!mongoDB == undefined) {
-                        if (!message.content.startsWith(prefix)) return;
-        
-                        const args = message.content.slice(prefix.length).trim().split(/ +/).filter(Boolean);
-                        const cmd = args.shift().toLowerCase()
-            
-                        const comando = await Commands.findOne({
-                            name: cmd
-                        })
-            
-                        if(message.content.includes(`${prefix}say`)) {
-                            if(args[0]) {
-                                message.reply(`*${args.join(' ')}*\n\nrequisitado por: ${message.author}`)
-                            } else {
-                                message.reply('Você precisa escrever algo!')
-                            }
-                        } else if(message.content.includes(`${prefix}help`)) {
-                            let embedHelp = new Discord.MessageEmbed()
-                            .setTitle('Painel de ajuda')
-                            .setThumbnail(Client.user.displayAvatarURL({ dinamic: true }))
-                            .setDescription('`say` - envie mensagens para membros!')
-                            .setColor('RANDOM')
-                            
-                            message.reply({ embeds: [embedHelp]})
-                        }
-            
-                        if(comando) {
-                            if(comando.type === 'message') {
-                                message.reply(`${comando.response}`)
-                            } else if(comando.type === 'embed') {
-                                let embed = new Discord.MessageEmbed()
-                                .setDescription(`${comando.response}`)
-                                .setColor('RANDOM')
-            
-                                message.reply({ embeds: [embed]})
-                            } else {
-                                console.log(c.red(`Você definiu um tipo inválido pro comando `) + c.grey(`${comando.name}`))
-                            }
-                        }
-                    } else {
-                        if (!message.content.startsWith(prefix)) return;
-        
-                        const args = message.content.slice(prefix.length).trim().split(/ +/).filter(Boolean);
-                        const cmd = args.shift().toLowerCase()
-                        let comando = db.fetch(`${cmd}_name`)
-                        let type = db.fetch(`${cmd}_type`)
-                        let response = db.fetch(`${cmd}_response`)
-            
-                        if(message.content.includes(`${prefix}say`)) {
-                            if(args[0]) {
-                                message.reply(`*${args.join(' ')}*\n\nrequisitado por: ${message.author}`)
-                            } else {
-                                message.reply('Você precisa escrever algo!')
-                            }
-                        } else if(message.content.includes(`${prefix}help`)) {
-                            let embedHelp = new Discord.MessageEmbed()
-                            .setTitle('Painel de ajuda')
-                            .setThumbnail(Client.user.displayAvatarURL({ dinamic: true }))
-                            .setDescription('`say` - faça eu falar no chat.')
-                            .setColor('RANDOM')
-                            
-                            message.reply({ embeds: [embedHelp]})
-                        }
-            
-                        if(comando) {
-                            if(type === 'message') {
-                                message.reply(`${response}`)
-                            } else if(type === 'embed') {
-                                let embed = new Discord.MessageEmbed()
-                                .setDescription(`${response}`)
-                                .setColor('RANDOM')
-            
-                                message.reply({ embeds: [embed]})
-                            } else {
-                                console.log(c.red(`Você definiu um tipo inválido pro comando `) + c.grey(`${comando}`))
-                            }
-                        }
-                    }
-        
-                })
-            } else {
-                Starter.on("messageCreate", async (message) => {
-                    if(!mongoDB == undefined) {
-                        if (!message.content.startsWith(prefix)) return;
-        
-                        const args = message.content.slice(prefix.length).trim().split(/ +/).filter(Boolean);
-                        const cmd = args.shift().toLowerCase()
-            
-                        const comando = await Commands.findOne({
-                            name: cmd
-                        })
-            
-                        if(message.content.includes(`${prefix}say`)) {
-                            if(args[0]) {
-                                message.reply(`*${args.join(' ')}*\n\nrequisitado por: ${message.author}`)
-                            } else {
-                                message.reply('Você precisa escrever algo!')
-                            }
-                        } else if(message.content.includes(`${prefix}help`)) {
-                            let embedHelp = new Discord.MessageEmbed()
-                            .setTitle('Painel de ajuda')
-                            .setThumbnail(Starter.user.displayAvatarURL({ dinamic: true }))
-                            .setDescription('`say` - envie mensagens para membros!')
-                            .setColor('RANDOM')
-                            
-                            message.reply({ embeds: [embedHelp]})
-                        }
-            
-                        if(comando) {
-                            if(comando.type === 'message') {
-                                message.reply(`${comando.response}`)
-                            } else if(comando.type === 'embed') {
-                                let embed = new Discord.MessageEmbed()
-                                .setDescription(`${comando.response}`)
-                                .setColor('RANDOM')
-            
-                                message.reply({ embeds: [embed]})
-                            } else {
-                                console.log(c.red(`Você definiu um tipo inválido pro comando `) + c.grey(`${comando.name}`))
-                            }
-                        }
-                    } else {
-                        if (!message.content.startsWith(prefix)) return;
-        
-                        const args = message.content.slice(prefix.length).trim().split(/ +/).filter(Boolean);
-                        const cmd = args.shift().toLowerCase()
-                        let comando = db.fetch(`${cmd}_name`)
-                        let type = db.fetch(`${cmd}_type`)
-                        let response = db.fetch(`${cmd}_response`)
-            
-                        if(message.content.includes(`${prefix}say`)) {
-                            if(args[0]) {
-                                message.reply(`*${args.join(' ')}*\n\nrequisitado por: ${message.author}`)
-                            } else {
-                                message.reply('Você precisa escrever algo!')
-                            }
-                        } else if(message.content.includes(`${prefix}help`)) {
-                            let embedHelp = new Discord.MessageEmbed()
-                            .setTitle('Painel de ajuda')
-                            .setThumbnail(Starter.user.displayAvatarURL({ dinamic: true }))
-                            .setDescription('`say` - faça eu falar no chat.')
-                            .setColor('RANDOM')
-                            
-                            message.reply({ embeds: [embedHelp]})
-                        }
-            
-                        if(comando) {
-                            if(type === 'message') {
-                                message.reply(`${response}`)
-                            } else if(type === 'embed') {
-                                let embed = new Discord.MessageEmbed()
-                                .setDescription(`${response}`)
-                                .setColor('RANDOM')
-            
-                                message.reply({ embeds: [embed]})
-                            } else {
-                                console.log(c.red(`Você definiu um tipo inválido pro comando `) + c.grey(`${comando}`))
-                            }
-                        }
-                    }
-        
-                })
-            }
-
-        console.log(c.green(`Comandos `) + c.green('carregados ✅'))
+        } else {
+            return console.error("Você ainda não logou no seu bot!")
+        }
     }
 
     static async version() {
